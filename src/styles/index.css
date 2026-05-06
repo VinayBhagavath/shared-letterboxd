@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(64,188,244,0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(0,224,84,0.06), transparent 60%),
+    #0b0d10;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar for dark theme */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2a313c;
+  border-radius: 999px;
+  border: 2px solid #0b0d10;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #3a4250;
+}
+
+@layer components {
+  .card {
+    @apply bg-ink-900/80 border border-ink-700/70 rounded-2xl shadow-poster backdrop-blur-sm;
+  }
+  .input {
+    @apply w-full bg-ink-900 border border-ink-700 rounded-xl px-4 py-3 text-ink-100
+           placeholder:text-ink-400 focus:outline-none focus:border-accent-blue/70
+           focus:ring-2 focus:ring-accent-blue/20 transition;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2
+           font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-accent-green/90 text-ink-950 hover:bg-accent-green;
+  }
+  .btn-ghost {
+    @apply btn bg-ink-800 text-ink-100 hover:bg-ink-700 border border-ink-700;
+  }
+  .btn-danger {
+    @apply btn bg-red-500/15 text-red-300 hover:bg-red-500/25 border border-red-500/30;
+  }
+  .chip {
+    @apply inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full
+           bg-ink-700/70 text-ink-200 border border-ink-600;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, #1f242d 0px, #2a313c 200px, #1f242d 400px);
+    background-size: 800px 100%;
+    @apply animate-shimmer;
+  }
+}
+
+/* Tweak focus rings globally to match palette */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(64, 188, 244, 0.6);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
