@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowUp, Check, Eye, ExternalLink, MessageCircle, Trash } from './Icons.jsx';
 import Avatar from './Avatar.jsx';
 import WatcherStack from './WatcherStack.jsx';
@@ -14,7 +14,8 @@ export default function MovieCard({
   onAddComment,
   onDelete,
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(() => (movie.comment_count ?? 0) > 0);
+  const [userToggledComments, setUserToggledComments] = useState(false);
   const [commentDraft, setCommentDraft] = useState('');
   const [busy, setBusy] = useState(false);
   const [voteAnim, setVoteAnim] = useState(false);
@@ -23,6 +24,11 @@ export default function MovieCard({
 
   const canDelete = userName && movie.added_by?.toLowerCase() === userName.toLowerCase();
   const addedColor = resolveUserColor(movie.added_by_color, movie.added_by);
+
+  useEffect(() => {
+    if (userToggledComments) return;
+    setExpanded((movie.comment_count ?? 0) > 0);
+  }, [movie.comment_count, userToggledComments]);
 
   async function handleVote() {
     if (!userName) return;
@@ -181,10 +187,13 @@ export default function MovieCard({
           <button
             type="button"
             className="inline-flex items-center gap-1 hover:text-ink-100"
-            onClick={() => setExpanded((v) => !v)}
+            onClick={() => {
+              setUserToggledComments(true);
+              setExpanded((v) => !v);
+            }}
             aria-expanded={expanded}
           >
-            <MessageCircle size={14} /> {movie.comment_count}
+            <MessageCircle size={14} /> {expanded ? 'Hide' : 'Show'} {movie.comment_count}
           </button>
         </div>
 
